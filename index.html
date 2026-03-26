@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mergulho Bíblico | Vá além da superfície</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --navy-blue: #0a2342;
+            --turquoise: #1cb3a0;
+            --turquoise-hover: #148f7f;
+            --text-dark: #2c3e50;
+            --card-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Merriweather', serif; color: var(--navy-blue); }
+
+        a { text-decoration: none; transition: all 0.3s ease; }
+
+        /* HEADER */
+        header {
+            background-color: var(--navy-blue);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li a { color: #e0e0e0; font-size: 0.95rem; }
+        nav ul li a:hover { color: var(--turquoise); }
+
+        .btn-header {
+            background-color: var(--turquoise);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(rgba(10, 35, 66, 0.85), rgba(10, 35, 66, 0.85)), url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=2070&auto=format&fit=crop') center/cover;
+            color: white;
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .hero h1 { color: white; font-size: 3rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; color: #e0e0e0; }
+
+        .btn-primary {
+            background-color: var(--turquoise);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* SEÇÃO VERSÍCULO (NOVO) */
+        .verse-day {
+            text-align: center;
+            padding: 80px 5%;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .verse-day blockquote {
+            font-family: 'Merriweather', serif;
+            font-size: 1.8rem;
+            color: var(--navy-blue);
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .verse-day cite {
+            display: block;
+            margin-top: 20px;
+            font-weight: 600;
+            color: var(--turquoise);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-style: normal;
+        }
+
+        /* SEÇÃO CONTAINER PADRÃO */
+        .section-container { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 50px; position: relative; }
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: var(--turquoise);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* GRID MISSÃO E VALORES (NOVO) */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        .benefit-item i { font-size: 2.5rem; color: var(--turquoise); margin-bottom: 20px; }
+        .benefit-item h4 { margin-bottom: 15px; font-size: 1.3rem; }
+
+        /* GRID PROFUNDIDADES */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 4px solid var(--turquoise);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card i { font-size: 2.5rem; color: var(--turquoise); margin-bottom: 20px; }
+
+        /* COMO COMEÇAR (NOVO) */
+        .steps-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--navy-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin: 0 auto 20px;
+            border: 4px solid var(--turquoise);
+        }
+
+        /* DESTAQUE */
+        .destaque {
+            background-color: var(--navy-blue);
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            margin: 60px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .destaque-img { width: 50%; background: url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2070&auto=format&fit=crop') center/cover; }
+        .destaque-content { padding: 60px; width: 50%; }
+        .destaque-content h3 { color: var(--turquoise); margin-bottom: 20px; font-size: 2rem; }
+        .tag { background-color: rgba(28, 179, 160, 0.2); color: var(--turquoise); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-bottom: 20px; }
+
+        /* IDEALIZADOR (NOVO) */
+        .founder-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 5px solid var(--turquoise);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .founder-box i { font-size: 3rem; color: #ddd; }
+        .founder-text p { font-style: italic; color: #555; margin-bottom: 10px; }
+        .founder-name { font-weight: 600; color: var(--navy-blue); }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--navy-blue);
+            color: #e0e0e0;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .social-links { margin-bottom: 30px; }
+        .social-links a { color: white; font-size: 1.8rem; margin: 0 15px; }
+        .social-links a:hover { color: var(--turquoise); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            header { flex-direction: column; gap: 15px; }
+            .destaque { flex-direction: column; }
+            .destaque-img, .destaque-content { width: 100%; }
+            .destaque-img { height: 250px; }
+            .founder-box { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-anchor"></i> Mergulho Bíblico
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="/estudos/inicioestudos.html">Estudos</a></li>
+                <li><a href="/memorizacao/memorizacao.html">Memorização</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                
+            </ul>
+        </nav>
+        <a href="ajuda.html" class="btn-header">AJUDA-NOS</a>
+    </header>
+
+    <section class="hero">
+        <h1>Vá além da superfície da Palavra.</h1>
+        <p>Uma plataforma gratuita para quem deseja estudar as Escrituras com profundidade, contexto e devoção.</p>
+        <div class="hero-buttons">
+            <a href="/estudos/inicioestudos.html" class="btn-primary">Explorar Estudos</a>
+        </div>
+    </section>
+
+    <section class="verse-day">
+        <div class="section-container">
+            <blockquote>"Lâmpada para os meus pés é tua palavra e luz, para o meu caminho."</blockquote>
+            <cite>Salmos 119:105</cite>
+        </div>
+    </section>
+
+    <section class="section-container" id="sobre">
+        <h2 class="section-title">Nossos Pilares</h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fa-solid fa-scroll"></i>
+                <h4>Bíblia como Autoridade</h4>
+                <p>Nossa única regra de fé e prática. Buscamos a interpretação fiel ao texto original.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <h4>Acesso Gratuito</h4>
+                <p>Cremos que o conhecimento bíblico deve ser acessível a todos, sem barreiras financeiras.</p>
+            </div>
+            <div class="benefit-item">
+                <i class="fa-solid fa-comments"></i>
+                <h4>Linguagem Clara</h4>
+                <p>Teoria profunda explicada de forma simples, para que todos possam mergulhar.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="estudos" class="section-container" style="background-color: rgba(10, 35, 66, 0.02);">
+        <h2 class="section-title">Escolha a sua profundidade</h2>
+        <div class="grid-3">
+            <div class="card">
+                <i class="fa-solid fa-water"></i>
+                <h3>Piscina Rasa</h3>
+                <p>Princípios básicos da fé, quem é Jesus, como orar. Ideal para novos convertidos ou iniciantes.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-book-open-reader"></i>
+                <h3>Nível Intermediário</h3>
+                <p>Panorama dos livros da Bíblia, história de Israel e entendimento das parábolas.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-anchor"></i>
+                <h3>Águas Profundas</h3>
+                <p>Teologia sistemática, exegese, e noções de Grego e Hebraico para um aprofundamento real.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container">
+        <h2 class="section-title">Como começar seu Mergulho</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h4>Escolha um Nível</h4>
+                <p>Avalie seu conhecimento atual e adquire mais com nossos estudos.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h4>Memorique a Palavra</h4>
+                <p>Use nossas ferramentas de memorização para guardar o que aprendeu.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h4>Pratique</h4>
+                <p>Coloque em pratica no dia a dia.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container">
+        <div class="destaque">
+            <div class="destaque-img"></div>
+            <div class="destaque-content">
+                <span class="tag">Novo Estudo</span>
+                <h3>Os Atributos de Deus</h3>
+                <p style="margin-bottom: 30px;">Atributos exclusivos (onipresença, onisciência, onipotência, eternidade, imutabilidade, santidade, Trindade) e morais (bom, amor, misericordioso, fiel, justo) de Deus revelados na Bíblia.</p>
+                <a href="/estudos/estudo29.html" class="btn-primary">Ler Estudo Completo</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container">
+        <div class="founder-box">
+            <i class="fa-solid fa-quote-left"></i>
+            <div class="founder-text">
+                <p>"Este projeto nasceu do desejo de ver cristãos apaixonados não apenas por sentir, mas por conhecer profundamente Aquele que os chamou das trevas para Sua maravilhosa luz."</p>
+                <div class="founder-name">— Equipe Mergulho Bíblico</div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato">
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+        <p class="footer-text">Projeto Sem Fins Lucrativos / Feito para a Glória de Deus</p>
+        <p class="footer-text" style="font-size: 0.8rem; opacity: 0.6;">&copy; 2026 Mergulho Bíblico. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

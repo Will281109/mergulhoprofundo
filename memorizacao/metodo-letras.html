@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatilho Mental | Mergulho Bíblico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --navy-blue: #0a2342;
+            --turquoise: #1cb3a0;
+            --text-dark: #2c3e50;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); }
+
+        header {
+            background-color: var(--navy-blue);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { color: #fff; font-size: 1.1rem; font-family: 'Merriweather', serif; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 5%; }
+
+        #deck-menu h2 { font-family: 'Merriweather', serif; color: var(--navy-blue); margin-bottom: 30px; text-align: center; }
+        
+        /* GRADE DE 4 CARDS */
+        .decks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .deck-card {
+            background: white; padding: 25px; border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center;
+            cursor: pointer; transition: 0.3s; border: 2px solid transparent;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100%;
+        }
+
+        .deck-card:hover { transform: translateY(-8px); border-color: var(--turquoise); }
+        .deck-card i { font-size: 2.2rem; color: var(--turquoise); margin-bottom: 15px; }
+        .deck-card h3 { color: var(--navy-blue); margin-bottom: 8px; font-size: 1.1rem; }
+        .deck-card p { font-size: 0.75rem; color: #666; line-height: 1.4; }
+
+        #practice-area { display: none; animation: fadeIn 0.5s ease; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .btn-back {
+            background: none; border: none; color: var(--navy-blue);
+            font-weight: 600; cursor: pointer; margin-bottom: 30px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .verse-box {
+            background: white; padding: 60px 40px; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08); margin-bottom: 30px;
+            position: relative; border: 1px solid #eee;
+        }
+
+        #display-text {
+            font-size: 2.2rem; letter-spacing: 6px; line-height: 1.6;
+            color: var(--navy-blue); font-weight: 600; transition: 0.2s;
+            word-wrap: break-word;
+        }
+
+        .hint-active {
+            color: #999 !important; letter-spacing: 1px !important;
+            font-size: 1.5rem !important; font-weight: 400 !important;
+        }
+
+        .action-btns { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+
+        .btn-action {
+            border: none; padding: 15px 35px; border-radius: 50px;
+            font-weight: 600; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .btn-hint { background: #eee; color: #555; }
+        .btn-next { background: var(--navy-blue); color: white; }
+        .btn-next:hover { background: var(--turquoise); transform: scale(1.05); }
+
+        .instructions { margin-top: 40px; font-size: 0.85rem; color: #999; max-width: 500px; margin-inline: auto; }
+header {
+            background-color: var(--navy-blue);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        header .logo { 
+            color: #fff; 
+            font-size: 1.2rem; 
+            font-family: 'Merriweather', serif; 
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header nav ul { display: flex; list-style: none; gap: 20px; }
+        header nav ul li a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: 0.3s; opacity: 0.8; }
+        header nav ul li a:hover { opacity: 1; color: var(--turquoise); }
+
+        .btn-header { 
+            background: var(--turquoise); 
+            color: white; 
+            padding: 10px 22px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        
+        .btn-header:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(28, 179, 160, 0.3); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 5%; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-anchor"></i> Mergulho Bíblico
+        </div>
+        <nav>
+            <ul>
+                  <li><a href="/index.html">Início</a></li>
+                <li><a href="/estudos/inicioestudos.html">Estudos</a></li>
+                <li><a href="/memorizacao/memorizacao.html">Memorização</a></li>
+                <li><a href="/sobre.html">Sobre</a></li>
+                
+            </ul>
+        </nav>
+         <a href="/ajuda.html" class="btn-header">AJUDA-NOS</a>
+    </header>
+
+    <div class="container">
+        <div id="deck-menu">
+            <h2>Desafio das Iniciais</h2>
+            <div class="decks-grid" id="main-grid"></div>
+        </div>
+
+        <div id="practice-area">
+            <button class="btn-back" onclick="backToMenu()">
+                <i class="fa-solid fa-chevron-left"></i> Voltar aos Temas
+            </button>
+
+            <div class="verse-box">
+                <small id="verse-ref" style="color: var(--turquoise); font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; display: block; text-transform: uppercase;"></small>
+                <div id="display-text"></div>
+            </div>
+
+            <div class="action-btns">
+                <button class="btn-action btn-hint" onmousedown="showFullText()" onmouseup="hideFullText()" ontouchstart="showFullText()" ontouchend="hideFullText()">
+                    <i class="fa-solid fa-eye"></i> Segure para Ver
+                </button>
+                <button class="btn-action btn-next" onclick="nextVerse()">
+                    Próximo <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <p class="instructions">
+                Use as letras iniciais como gatilho para lembrar as palavras. 
+                Segure o botão cinza caso precise de uma "ajudinha".
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const themeSettings = {
+            'forca': { title: "Força e Coragem", desc: "Superação e confiança.", icon: "fa-shield-halved" },
+            'ansiedade': { title: "Ansiedade e Descanso", desc: "Paz interior e entrega.", icon: "fa-cloud-sun" },
+            'proposito': { title: "Propósito e Vocação", desc: "Planos e identidade.", icon: "fa-compass" },
+            'gratidao': { title: "Gratidão", desc: "Perspectiva positiva.", icon: "fa-hands-praying" },
+            'sabedoria': { title: "Sabedoria", desc: "Escolhas e discernimento.", icon: "fa-lightbulb" },
+            'amor': { title: "Amor", desc: "Relacionamentos e empatia.", icon: "fa-heart" },
+            'esperanca': { title: "Esperança", desc: "Promessas para o futuro.", icon: "fa-seedling" },
+            'identidade': { title: "Identidade", desc: "Seu valor em Cristo.", icon: "fa-user-check" },
+            'disciplina': { title: "Disciplina", desc: "Constância e foco.", icon: "fa-bullseye" },
+            'fe': { title: "Fé e Milagres", desc: "Crença no impossível.", icon: "fa-fire-flame-curved" }
+        };
+
+        const database = {
+            'forca': [
+                { ref: "Josué 1:9", text: "Não fui eu que ordenei a você? Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar." },
+                { ref: "Isaías 41:10", text: "Por isso não tema, pois estou com você; não tenha medo, pois sou o seu Deus. Eu o fortalecerei e o ajudarei; eu o segurarei com a minha mão direita vitoriosa." },
+                { ref: "Salmos 27:1", text: "O Senhor é a minha luz e a minha salvação; de quem terei temor? O Senhor é a fortaleza da minha vida; de quem terei medo?" },
+                { ref: "Salmos 27:14", text: "Espere no Senhor. Seja forte! Coragem! Espere no Senhor." },
+                { ref: "Efésios 6:10-11", text: "Finalmente, fortaleçam-se no Senhor e no seu forte poder. Vistam toda a armadura de Deus, para poderem ficar firmes contra as ciladas do Diabo." },
+                { ref: "2 Timóteo 1:7", text: "Pois Deus não nos deu espírito de covardia, mas de poder, de amor e de equilíbrio." },
+                { ref: "Deuteronômio 31:6", text: "Sejam fortes e corajosos. Não tenham medo nem fiquem apavorados por causa delas, pois o Senhor, o seu Deus, vai com vocês; nunca os deixará, nunca os abandonará." },
+                { ref: "Salmos 31:24", text: "Sejam fortes e corajoso o coração de todos vocês que esperam no Senhor!" },
+                { ref: "João 16:33", text: "Eu disse essas coisas para que em mim vocês tenham paz. Neste mundo vocês terão aflições; contudo, tenham bom ânimo! Eu venci o mundo." },
+                { ref: "Filipenses 4:12-13", text: "Sei o que é passar necessidade e sei o que é ter fartura. Aprendi o segredo de viver contente em toda e qualquer situação... Tudo posso naquele que me fortalece." }
+            ],
+            'ansiedade': [
+                // Ansiedade e Descanso
+                { ref: "Mateus 11:28-30", text: "Venham a mim, todos os que estão cansados e sobrecarregados, e eu lhes darei descanso. Tomem sobre vocês o meu jugo e aprendam de mim, pois sou manso e humilde de coração, e vocês encontrarão descanso para as suas almas. Pois o meu jugo é suave e o meu fardo é leve." },
+                { ref: "Filipenses 4:6-7", text: "Não vivam ansiosos por coisa alguma; antes, em tudo, apresentem os seus pedidos a Deus pela oração e pela súplica, com ações de graças. E a paz de Deus, que excede todo o entendimento, guardará o seu coração e a sua mente em Cristo Jesus." },
+                { ref: "1 Pedro 5:7", text: "Lancem sobre ele toda a sua ansiedade, porque ele tem cuidado de vocês." },
+                { ref: "Mateus 6:31-34", text: "Portanto, não se preocupem, dizendo: ‘Que vamos comer?’ ou ‘Que vamos beber?’ ou ‘Que vamos vestir?’ Pois os pagãos é que correm atrás dessas coisas; mas o Pai celestial sabe que vocês precisam delas. Busquem, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas. Portanto, não se preocupem com o amanhã, pois o amanhã trará as suas próprias preocupações. Basta a cada dia o seu próprio mal." },
+                { ref: "Salmos 55:22", text: "Entregue as suas preocupações ao Senhor, e ele o susterá; jamais permitirá que o justo venha a cair." },
+                { ref: "Salmos 4:8", text: "Em paz me deito e logo adormeço, pois só tu, Senhor, me fazes viver em segurança." },
+                { ref: "Salmos 127:2", text: "Será inútil levantar cedo e dormir tarde, trabalhando arduamente por alimento. O Senhor concede o sono àqueles a quem ama." },
+                { ref: "Isaías 26:3", text: "Tu, Senhor, guardarás em perfeita paz aquele cujo propósito é firme, porque em ti confia." },
+                { ref: "João 14:27", text: "Deixo-lhes a paz; a minha paz lhes dou. Não a dou como o mundo a dá. Não se perturbem os seus corações, nem tenham medo." },
+                { ref: "Salmos 23:1-3", text: "O Senhor é o meu pastor; de nada terei falta. Em verdes pastagens me faz repousar e me conduz a águas tranquilas; restaura-me o vigor." }
+            ],
+
+             'proposito': [
+        { ref: "Jeremias 29:11", text: "Porque sou eu que conheço os planos que tenho para vocês, diz o Senhor, planos de fazê-los prosperar e não de causar dano, planos de dar a vocês esperança e um futuro." },
+        { ref: "Provérbios 16:3", text: "Consagre ao Senhor tudo o que você faz, e os seus planos serão bem-sucedidos." },
+        { ref: "Provérbios 19:21", text: "Muitos são os planos no coração do homem, mas o que prevalece é o propósito do Senhor." },
+        { ref: "Efésios 2:10", text: "Porque somos criação de Deus, realizada em Cristo Jesus para fazermos boas obras, as quais Deus preparou de antemão para que nós as praticássemos." },
+        { ref: "Salmos 138:8", text: "O Senhor cumprirá o seu propósito para comigo! Teu amor, Senhor, dura para sempre; não abandones as obras das tuas mãos." },
+        { ref: "Romanos 8:28", text: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito." },
+        { ref: "Salmos 32:8", text: "Eu o instruirei e o ensinarei no caminho que você deve seguir; eu o aconselharei e cuidarei de você." },
+        { ref: "Colossenses 3:23-24", text: "Tudo o que fizerem, façam de todo o coração, como para o Senhor, e não para os homens, sabendo que receberão do Senhor a recompensa da herança. É a Cristo, o Senhor, que vocês estão servindo." },
+        { ref: "Isaías 43:18-19", text: "Esqueçam as coisas passadas; não vivam no passado. Vejam, estou fazendo uma coisa nova! Ela já está surgindo! Vocês não percebem? Até no deserto vou abrir um caminho e riachos no ermo." },
+        { ref: "Filipenses 1:6", text: "Estou convencido de que aquele que começou boa obra em vocês, vai completá-la até o dia de Cristo Jesus." }
+    ],
+     'gratidao': [
+    { id: 401, ref: "1 Tessalonicenses 5:16-18", text: "Alegrem-se sempre. Orem continuamente. Deem graças em todas as circunstâncias, pois esta é a vontade de Deus para vocês em Cristo Jesus." },
+    { id: 402, ref: "Colossenses 3:15-17", text: "Que a paz de Cristo seja o juiz em seu coração... E sejam agradecidos. Tudo o que fizerem, seja em palavra ou em ação, façam-no em nome do Senhor Jesus, dando por meio dele graças a Deus Pai." },
+    { id: 403, ref: "Salmos 103:1-2", text: "Bendiga ao Senhor a minha alma! Bendiga ao Senhor todo o meu ser! Bendiga ao Senhor a minha alma! Não esqueça nenhuma de suas bênçãos." },
+    { id: 404, ref: "Filipenses 4:11-13", text: "Aprendi o segredo de viver contente em toda e qualquer situação, seja bem alimentado, seja com fome, tendo muito, ou passando necessidade. Tudo posso naquele que me fortalece." },
+    { id: 405, ref: "1 Timóteo 6:6-8", text: "De fato, a piedade com contentamento é grande lucro. Pois nada trouxemos para este mundo e nada podemos levar dele. Por isso, tendo o que comer e com que nos vestir, estejamos com isso satisfeitos." },
+    { id: 406, ref: "Hebreus 13:5", text: "Conservem-se livres do amor ao dinheiro e contentem-se com o que vocês têm, porque Deus mesmo disse: Nunca o deixarei, nunca o abandonarei." },
+    { id: 407, ref: "Salmos 107:1", text: "Deem graças ao Senhor, porque ele é bom; o seu amor dura para sempre." },
+    { id: 408, ref: "Tiago 1:17", text: "Toda boa dádiva e todo dom perfeito vêm do alto, descendo do Pai das luzes, que não muda como sombras inconstantes." },
+    { id: 409, ref: "Salmos 100:4-5", text: "Entrem por suas portas com ações de graças e em seus átrios com louvor... Pois o Senhor é bom e o seu amor leal dura para sempre; a sua fidelidade permanece por todas as gerações." },
+    { id: 410, ref: "Salmos 118:24", text: "Este é o dia em que o Senhor agiu; alegremo-nos e exultemos nele." }
+],
+            'sabedoria': [
+    { id: 501, ref: "Tiago 1:5", text: "Se algum de vocês tem falta de sabedoria, peça-a a Deus, que a todos dá livremente, de boa vontade; e lhe será concedida." },
+    { id: 502, ref: "Provérbios 3:5-6", text: "Confie no Senhor de todo o seu coração e não se estribie em seu próprio entendimento; reconheça o Senhor em todos os seus caminhos, e ele endireitará as suas veredas." },
+    { id: 503, ref: "Provérbios 4:23", text: "Acima de tudo, guarde o seu coração, pois dele procede o curso da sua vida." },
+    { id: 504, ref: "Provérbios 11:14", text: "Sem diretrizes a nação cai; o que a salva é ter muitos conselheiros." },
+    { id: 505, ref: "Provérbios 15:22", text: "Os planos fracassam por falta de conselho, mas são bem-sucedidos quando há muitos conselheiros." },
+    { id: 506, ref: "Tiago 3:17", text: "Mas a sabedoria que vem do alto é antes de tudo pura; depois, pacífica, amável, compreensiva, cheia de misericórdia e de bons frutos, imparcial e sincera." },
+    { id: 507, ref: "Provérbios 2:6-7", text: "Pois o Senhor é quem dá sabedoria; de sua boca procedem o conhecimento e o discernimento. Ele reserva a vitória para os íntegros." },
+    { id: 508, ref: "Salmos 119:105", text: "A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho." },
+    { id: 509, ref: "Provérbios 16:9", text: "Em seu coração o homem planeja o seu caminho, mas o Senhor determina os seus passos." },
+    { id: 510, ref: "Eclesiastes 10:10", text: "Se o machado está cego e sua lâmina não foi afiada, é preciso golpear com mais força; agir com sabedoria assegura o sucesso." }
+],
+'amor': [
+    { id: 601, ref: "1 Coríntios 13:4-7", text: "O amor é paciente, o amor é bondoso. Não inveja, não se vangloria, não se orgulha. Tudo sofre, tudo crê, tudo espera, tudo suporta." },
+    { id: 602, ref: "Provérbios 17:17", text: "O amigo ama em todos os momentos; é um irmão na adversidade." },
+    { id: 603, ref: "João 15:12-13", text: "Amem-se uns aos outros como eu os amei. Ninguém tem maior amor do que aquele que dá a sua vida pelos seus amigos." },
+    { id: 604, ref: "Colossenses 3:13-14", text: "Perdoem como o Senhor os perdoou. Acima de tudo, porém, revistam-se do amor, que é o elo perfeito." },
+    { id: 605, ref: "Provérbios 27:17", text: "Assim como o ferro afia o ferro, o homem afia o seu companheiro." },
+    { id: 606, ref: "1 João 4:7", text: "Amados, amemo-nos uns aos outros, pois o amor procede de Deus. Aquele que ama é nascido de Deus e conhece a Deus." },
+    { id: 607, ref: "Efésios 4:2-3", text: "Sejam completamente humildes e dóceis, e sejam pacientes, suportando uns aos outros com amor no vínculo da paz." },
+    { id: 608, ref: "Romanos 12:10", text: "Dediquem-se uns aos outros com amor fraternal. Prefiram dar honra aos outros mais do que a si próprios." },
+    { id: 609, ref: "1 Pedro 4:8", text: "Sobretudo, amem-se sinceramente uns aos outros, porque o amor perdoa muitíssimos pecados." },
+    { id: 610, ref: "Eclesiastes 4:9-10", text: "É melhor serem dois do que um... Se um cair, o amigo pode ajudá-lo a levantar-se. Mas pobre do homem que cai e não tem quem o ajude a levantar-se." }
+],
+            'esperanca': [
+    { id: 701, ref: "Romanos 12:12", text: "Alegrem-se na esperança, sejam pacientes na tribulação, perseverem na oração." },
+    { id: 702, ref: "Lamentações 3:21-23", text: "Lembro-me do que pode me dar esperança: Graças ao amor do Senhor não somos consumidos. Suas misericórdias renovam-se cada manhã!" },
+    { id: 703, ref: "Hebreus 10:23", text: "Apeguemo-nos com firmeza à esperança que confessamos, pois aquele que prometeu é fiel." },
+    { id: 704, ref: "Salmos 42:11", text: "Por que você está assim tão triste, ó minha alma? Ponha a sua esperança em Deus! Pois ainda o louvarei; ele é o meu Salvador." },
+    { id: 705, ref: "Apocalipse 21:4", text: "Ele enxugará dos seus olhos toda lágrima. Não haverá mais morte, nem tristeza, nem choro, nem dor, pois a antiga ordem já passou." },
+    { id: 706, ref: "Salmos 30:5", text: "O choro pode persistir uma noite, mas de manhã irrompe a alegria." },
+    { id: 707, ref: "Isaías 40:31", text: "Aqueles que esperam no Senhor renovam as suas forças. Voam alto como águias; correm e não ficam exaustos." },
+    { id: 708, ref: "Romanos 15:13", text: "Que o Deus da esperança os encha de toda alegria e paz, para que vocês transbordem de esperança pelo poder do Espírito Santo." },
+    { id: 709, ref: "Salmos 130:5", text: "Espero no Senhor com todo o meu ser, e na sua palavra ponho a minha esperança." },
+    { id: 710, ref: "Habacuque 3:17-18", text: "Mesmo não florescendo a figueira... ainda assim eu exultarei no Senhor, me alegrarei no Deus da minha salvação." }
+],
+'identidade': [
+    { id: 801, ref: "Gênesis 1:27", text: "Criou Deus o homem à sua imagem, à imagem de Deus o criou; homem e mulher os criou." },
+    { id: 802, ref: "1 Pedro 2:9", text: "Vocês são geração eleita, sacerdócio real, nação santa, povo exclusivo de Deus." },
+    { id: 803, ref: "Salmos 139:13-14", text: "Tu criaste o íntimo do meu ser... Eu te louvo porque me fizeste de modo especial e admirável." },
+    { id: 804, ref: "João 1:12", text: "Aos que o receberam, aos que creram em seu nome, deu-lhes o direito de se tornarem filhos de Deus." },
+    { id: 805, ref: "2 Coríntios 5:17", text: "Portanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas!" },
+    { id: 806, ref: "Gálatas 4:7", text: "Assim, você já não é escravo, mas filho; e por ser filho, Deus também o tornou herdeiro." },
+    { id: 807, ref: "Efésios 1:4", text: "Porque Deus nos escolheu nele antes da criação do mundo, para sermos santos e irrepreensíveis em sua presença." },
+    { id: 808, ref: "Sofonias 3:17", text: "O Senhor está em seu meio, poderoso para salvar. Ele se regozijará em você; com o seu amor a renovará." },
+    { id: 809, ref: "1 João 3:1", text: "Vejam que grande amor o Pai nos concedeu: que fôssemos chamados filhos de Deus, o que de fato somos!" },
+    { id: 810, ref: "Romanos 8:37", text: "Mas, em todas estas coisas, somos mais que vencedores, por meio daquele que nos amou." }
+],
+'disciplina': [
+    { id: 901, ref: "2 Timóteo 1:7", text: "Deus não nos deu espírito de covardia, mas de poder, de amor e de equilíbrio (domínio próprio)." },
+    { id: 902, ref: "Hebreus 12:1-2", text: "Corramos com perseverança a corrida que nos é proposta, tendo os olhos fitos em Jesus." },
+    { id: 903, ref: "1 Coríntios 9:24-25", text: "Corram de tal modo que alcancem o prêmio. Todos os que competem nos jogos se submetem a um treinamento rigoroso." },
+    { id: 904, ref: "Provérbios 12:24", text: "As mãos diligentes governarão, mas os preguiçosos acabarão escravos." },
+    { id: 905, ref: "Provérbios 13:4", text: "O preguiçoso deseja e nada consegue, mas os desejos do diligente são amplamente satisfeitos." },
+    { id: 906, ref: "Gálatas 6:9", text: "E não nos cansemos de fazer o bem, pois no tempo próprio colheremos, se não desanimarmos." },
+    { id: 907, ref: "Lucas 16:10", text: "Quem é fiel no pouco, também é fiel no muito; e quem é injusto no pouco, também é injusto no muito." },
+    { id: 908, ref: "Provérbios 25:28", text: "Como a cidade com os muros derribados, assim é o homem que não sabe dominar-se." },
+    { id: 909, ref: "Colossenses 3:23", text: "Tudo o que fizerem, façam de todo o coração, como para o Senhor, e não para os homens." },
+    { id: 910, ref: "Tito 2:11-12", text: "A graça de Deus nos ensina a renunciar à impiedade e a viver de maneira sensata, justa e piedosa." }
+],
+'fe': [
+    { id: 1001, ref: "Hebreus 11:1", text: "Ora, a fé é a certeza de que haveremos de receber o que esperamos, e a prova daquilo que não vemos." },
+    { id: 1002, ref: "Mateus 17:20", text: "Se tiverem fé do tamanho de uma semente de mostarda... nada lhes será impossível." },
+    { id: 1003, ref: "Marcos 9:23", text: "Se podes?, disse Jesus. Tudo é possível àquele que crê." },
+    { id: 1004, ref: "Lucas 1:37", text: "Pois nada é impossível para Deus." },
+    { id: 1005, ref: "Mateus 21:22", text: "E tudo o que pedirem em oração, se crerem, vocês receberão." },
+    { id: 1006, ref: "Efésios 3:20", text: "Àquele que é capaz de fazer infinitamente mais do que tudo o que pedimos ou pensamos." },
+    { id: 1007, ref: "Salmos 77:14", text: "Tu és o Deus que realiza milagres; mostras o teu poder entre os povos." },
+    { id: 1008, ref: "Romanos 4:17", text: "O Deus que dá vida aos mortos e chama à existência coisas que não existem." },
+    { id: 1009, ref: "João 11:40", text: "Respondeu Jesus: Não lhe falei que, se você cresse, veria a glória de Deus?" },
+    { id: 1010, ref: "Jeremias 32:17", text: "Soberano Senhor, tu fizeste os céus e a terra pelo teu grande poder. Nada é difícil demais para ti." }
+]
+
+
+        };
+
+        let currentDeck = [];
+        let currentIndex = 0;
+        let originalText = "";
+        let initialsText = "";
+
+        function renderMenu() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = '';
+            Object.keys(themeSettings).forEach(key => {
+                const config = themeSettings[key];
+                grid.innerHTML += `
+                    <div class="deck-card" onclick="startLetters('${key}')">
+                        <i class="fa-solid ${config.icon}"></i>
+                        <h3>${config.title}</h3>
+                        <p>${config.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function startLetters(deckKey) {
+            currentDeck = database[deckKey] || [];
+            if(currentDeck.length === 0) { alert("Em breve!"); return; }
+            currentIndex = 0;
+            document.getElementById('deck-menu').style.display = 'none';
+            document.getElementById('practice-area').style.display = 'block';
+            loadVerse();
+        }
+
+        function loadVerse() {
+            const v = currentDeck[currentIndex];
+            document.getElementById('verse-ref').innerText = v.ref;
+            originalText = v.text;
+            
+            // Lógica para gerar as iniciais mantendo pontuação colada à letra
+            initialsText = v.text.split(' ').map(word => {
+                if(word.length === 0) return "";
+                const firstChar = word[0].toUpperCase();
+                // Verifica se o último caractere da "palavra" é pontuação (.,!?)
+                const lastChar = word[word.length - 1];
+                const hasPunctuation = /[.,!?;:]/.test(lastChar);
+                return hasPunctuation && word.length > 1 ? firstChar + lastChar : firstChar;
+            }).join(' ');
+
+            document.getElementById('display-text').innerText = initialsText;
+            document.getElementById('display-text').classList.remove('hint-active');
+        }
+
+        function showFullText() {
+            const display = document.getElementById('display-text');
+            display.innerText = originalText;
+            display.classList.add('hint-active');
+        }
+
+        function hideFullText() {
+            const display = document.getElementById('display-text');
+            display.innerText = initialsText;
+            display.classList.remove('hint-active');
+        }
+
+        function nextVerse() {
+            currentIndex = (currentIndex + 1) % currentDeck.length;
+            loadVerse();
+            window.scrollTo(0,0);
+        }
+
+        function backToMenu() {
+            document.getElementById('deck-menu').style.display = 'block';
+            document.getElementById('practice-area').style.display = 'none';
+        }
+
+        window.onload = renderMenu;
+    </script>
+</body>
+</html>

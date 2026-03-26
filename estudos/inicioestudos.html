@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Estudos | Mergulho Bíblico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --navy-blue: #0a2342;
+            --turquoise: #1cb3a0;
+            --turquoise-hover: #148f7f;
+            --text-dark: #2c3e50;
+            --card-bg: #ffffff;
+            --soft-gray: #e8e8e8;
+            --gold: #d4af37;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); line-height: 1.6; }
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* HEADER */
+      header {
+    background-color: var(--navy-blue);
+    padding: 15px 5%;
+    display: flex;
+            justify-content: space-between;
+    align-items: center; 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo {
+    color: #fff;
+    font-size: 1.3rem;
+    font-family: 'Merriweather', serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+nav ul { 
+    list-style: none; 
+    display: flex; 
+    gap: 20px; 
+    align-items: center;
+    /* Centraliza os itens dentro da lista */
+    justify-content: center; 
+    /* Impede que o menu fique colado se a tela diminuir */
+    padding: 0 20px; 
+}
+
+nav ul li a { 
+    color: #e0e0e0; 
+    font-size: 0.9rem; 
+    font-weight: 400;
+}
+
+nav ul li a:hover { color: var(--turquoise); }
+
+        .btn-header {
+            background-color: var(--turquoise);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .btn-header:hover { background-color: var(--turquoise-hover); }
+
+        /* CONTEÚDO */
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+
+        /* BANNER */
+        .motivation-banner {
+            background: linear-gradient(135deg, var(--navy-blue), #163a63);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .motivation-text h2 { color: var(--turquoise); font-size: 1.6rem; margin-bottom: 8px; font-family: 'Merriweather', serif; }
+        .motivation-text p { font-size: 1rem; opacity: 0.9; }
+        
+        .btn-random {
+            background: transparent;
+            border: 2px solid var(--turquoise);
+            color: var(--turquoise);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn-random:hover { background: var(--turquoise); color: white; transform: scale(1.05); }
+
+        /* BUSCA */
+        .search-container { margin-bottom: 50px; }
+        .search-box input {
+            width: 100%; padding: 15px 25px;
+            border-radius: 30px; border: 1px solid var(--soft-gray);
+            font-size: 1rem; outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        /* GRID DE ESTUDOS */
+        .section-title { 
+            font-size: 1.2rem; 
+            margin-bottom: 30px; 
+            color: var(--navy-blue); 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: var(--soft-gray); }
+
+        .studies-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .study-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--soft-gray);
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+        .study-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .card-image { width: 100%; height: 180px; background-size: cover; background-position: center; position: relative; }
+        .badge-new { position: absolute; top: 12px; left: 12px; background: var(--turquoise); color: white; padding: 3px 8px; font-size: 0.65rem; font-weight: 700; border-radius: 4px; text-transform: uppercase; }
+
+        .card-content { padding: 20px; }
+        .card-content span { font-size: 0.7rem; color: var(--turquoise); font-weight: 700; text-transform: uppercase; }
+        .card-content h4 { font-size: 1.1rem; color: var(--navy-blue); margin: 5px 0 10px 0; font-family: 'Merriweather', serif; }
+        .card-content p { font-size: 0.85rem; color: #666; }
+
+        /* Mensagem de busca vazia */
+        #no-results { display: none; text-align: center; padding: 40px; color: var(--text-dark); }
+
+        footer { background: white; text-align: center; padding: 40px; border-top: 1px solid var(--soft-gray); }
+
+        @media (max-width: 992px) {
+            .studies-grid { grid-template-columns: repeat(2, 1fr); }
+            nav { display: none; }
+        }
+        @media (max-width: 600px) {
+            .studies-grid { grid-template-columns: 1fr; }
+            .motivation-banner { flex-direction: column; text-align: center; padding: 25px; }
+            .btn-random { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-anchor"></i> Mergulho Bíblico
+        </div>
+        <nav>
+            <ul>
+                   <li><a href="/index.html">Início</a></li>
+                <li><a href="/estudos/inicioestudos.html">Estudos</a></li>
+                <li><a href="/memorizacao/memorizacao.html">Memorização</a></li>
+                <li><a href="/sobre.html">Sobre</a></li>
+                
+            </ul>
+        </nav>
+         <a href="/ajuda.html" class="btn-header">AJUDA-NOS</a>
+    </header>
+
+    <div class="container">
+        <div class="motivation-banner">
+            <div class="motivation-text">
+                <h2>Alimente sua fé diariamente</h2>
+                <p>Estudos aprofundados para quem deseja ir além da superfície.</p>
+            </div>
+            <a href="javascript:void(0)" onclick="abrirEstudoAleatorio()" class="btn-random">
+                <i class="fa-solid fa-shuffle"></i> Estudo Aleatório
+            </a>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Pesquise por temas ou palavras-chave...">
+            </div>
+        </div>
+
+        <h2 class="section-title">Últimos Estudos</h2>
+        
+        <div id="no-results">
+            <h3>Nenhum estudo encontrado...</h3>
+            <p>Tente outras palavras-chave ou explore nossos temas em destaque.</p>
+        </div>
+
+        <div class="studies-grid" id="studiesGrid">
+            <a href="estudo1.html" class="study-card">
+                <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=600');">
+                    <span class="badge-new">Novo</span>
+                </div>
+                <div class="card-content">
+                    <span>O Caráter de Deus</span>
+                    <h4>Lento para a Ira</h4>
+                    <p>O que o "nariz comprido" de Deus revela sobre Sua paciência e justiça diante da maldade?</p>
+                </div>
+            </a>
+            
+            <a href="estudo6.html" class="study-card">
+                <div class="card-image" style="background-image: url('../style/estudo6.jpg');">
+                    <span class="badge-new">Novo</span>
+                </div>
+                <div class="card-content">
+                    <span>Fundamentos da Fé</span>
+                    <h4>A Criação</h4>
+        <p>Explore a origem do universo, o papel da Trindade e o propósito eterno de Deus ao chamar a luz à existência.</p>
+    </div>
+</a>
+
+<a href="estudo7.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo7.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Festas Bíblicas</span>
+        <h4>A Páscoa</h4>
+        <p>Do sangue nos batentes no Egito ao sacrifício supremo na cruz, entenda como Jesus cumpre a festa da libertação.</p>
+    </div>
+</a>
+<a href="estudo8.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo8.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Grandes Personagens</span>
+        <h4>O Chamado de Abraão</h4>
+        <p>Entenda o princípio da separação, a pátria celestial e por que Abraão é o maior exemplo de fé para a salvação.</p>
+    </div>
+</a>
+<a href="estudo9.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo9.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Doutrinas Bíblicas</span>
+        <h4>A Providência de Deus</h4>
+        <p>Descubra como Deus preserva, provê e governa o mundo, e entenda o papel de Sua mão cuidadosa mesmo em meio ao sofrimento.</p>
+    </div>
+</a>
+<a href="estudo10.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo10.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>A Aliança de Deus</span>
+        <h4>O Concerto com os Patriarcas</h4>
+        <p>Aprenda como a fidelidade de Deus atravessa gerações e o que significa viver em aliança com o Deus Yahweh.</p>
+    </div>
+</a>
+<a href="estudo11.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo11.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Fundamentos Bíblicos</span>
+        <h4>A Lei do Antigo Testamento</h4>
+        <p>Entenda o propósito da Torah, a divisão entre leis morais, civis e cerimoniais, e como a lei aponta para a graça em Cristo.</p>
+    </div>
+</a>
+<a href="estudo12.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo12.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Sacerdócio e Sacrifício</span>
+        <h4>O Dia da Expiação</h4>
+        <p>Entenda o profundo ritual do Yom Kippur e como o sacrifício de Jesus cumpriu definitivamente o que o sangue de animais apenas cobria.</p>
+    </div>
+</a>
+<a href="estudo13.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo13.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Sabedoria e Vida Cristã</span>
+        <h4>O Temor do Senhor</h4>
+        <p>Entenda por que o temor a Deus não é medo, mas o princípio da sabedoria que nos protege e nos aproxima do Seu caráter santo.</p>
+    </div>
+</a>
+<a href="estudo14.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo17.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Aliança Nacional</span>
+        <h4>O Concerto com os Israelitas</h4>
+        <p>Do Sinai às Campinas de Moabe: entenda como Deus formalizou Sua relação com o povo e como isso aponta para a Nova Aliança.</p>
+    </div>
+</a>
+
+<a href="estudo15.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo14.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Justiça e Conquista</span>
+        <h4>A Destruição dos Cananeus</h4>
+        <p>Como conciliar a ordem de aniquilação com o amor de Deus? Entenda o juízo sobre a corrupção moral e a necessidade de separação espiritual.</p>
+    </div>
+</a>
+<a href="estudo16.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo15.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Doutrina Bíblica</span>
+        <h4>Anjos e o Anjo do Senhor</h4>
+        <p>Explore a natureza e as funções dos mensageiros celestiais e descubra o mistério por trás da figura do Anjo do Senhor.</p>
+    </div>
+</a>
+<a href="estudo17.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo18.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Doutrina e Vida Cristã</span>
+        <h4>A Natureza da Idolatria</h4>
+        <p>Ídolos não são apenas estátuas. Entenda a influência demoníaca por trás da idolatria e como o materialismo moderno se torna um ídolo.</p>
+    </div>
+</a>
+
+<a href="estudo18.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo19.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Doutrina e Vida Cristã</span>
+        <h4>Fugindo da Idolatria no Mundo Moderno</h4>
+        <p>Ídolos não são só estátuas antigas. Descubra como o materialismo, as redes sociais e o egoísmo se tornam deuses modernos e como voltar o coração totalmente para Cristo.</p>
+    </div>
+</a>
+
+<a href="estudo19.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo16.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Concertos de Deus</span>
+        <h4>O Concerto de Deus com Davi</h4>
+        <p>A promessa de um trono eterno para a linhagem de Davi encontra seu cumprimento pleno em Jesus Cristo, o Rei messiânico que reina para sempre.</p>
+    </div>
+</a>
+<a href="estudo20.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo20.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida de Oração</span>
+        <h4>A Oração Eficaz</h4>
+        <p>Descubra o que torna a oração poderosa: fé, persistência, obediência e alinhamento com a vontade de Deus. Exemplos bíblicos como Elias mostram como Deus responde.</p>
+    </div>
+</a>
+<a href="estudo21.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo21.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Cristologia Bíblica</span>
+        <h4>Cristo no Antigo Testamento</h4>
+        <p>Descubra como tipos, profecias e eventos do AT (como Naamã no Jordão) apontam para Jesus como o cumprimento pleno da redenção de Deus.</p>
+    </div>
+</a>
+<a href="estudo22.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo22.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>História Bíblica</span>
+        <h4>A Cidade de Jerusalém</h4>
+        <p>Da capital de Davi ao centro de adoração, da destruição ao renascimento — entenda o significado histórico, espiritual e profético de Jerusalém para Israel e para a igreja.</p>
+    </div>
+</a>
+<a href="estudo23.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo23.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>História Bíblica</span>
+        <h4>O Templo</h4>
+        <p>Do tabernáculo ao Templo de Salomão, das destruições à reconstrução — entenda a história, o significado simbólico da presença de Deus e o cumprimento pleno em Jesus Cristo e na igreja.</p>
+    </div>
+</a>
+<a href="estudo24.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo24.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>A Adoração</h4>
+        <p>Definição, história, expressões bíblicas e bênçãos da verdadeira adoração — centrada em Deus, em espírito e em verdade, com louvor, oração, confissão e vida santa.</p>
+    </div>
+</a>
+<a href="estudo25.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo25.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>O Sofrimento dos Justos</h4>
+        <p>Por que Deus permite dor aos fiéis? Entenda as causas do sofrimento, razões bíblicas (pecado, prova, crescimento) e como vencer com fé, como Jó e Cristo.</p>
+    </div>
+</a>
+<a href="estudo26.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo26.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>A Morte</h4>
+        <p>A morte como resultado do pecado (física, moral, espiritual e eterna), mas vitória e esperança plena em Cristo, o Redentor vivo, como Jó proclamou.</p>
+    </div>
+</a>
+<a href="estudo27.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo27.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>O Louvor</h4>
+        <p>A importância, métodos e razões para louvar a Deus — de todo o coração, com cânticos, instrumentos, testemunho e vida santa, como no Salmo 9.</p>
+    </div>
+</a>
+<a href="estudo28.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo28.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>A Esperança segundo a Bíblia</h4>
+        <p>Definição, base (Deus fiel, Cristo, Palavra) e foco da esperança bíblica — uma âncora firme que não traz confusão, ancorada em promessas eternas.</p>
+    </div>
+</a>
+<a href="estudo29.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo29.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>Os Atributos de Deus</h4>
+        <p>Atributos exclusivos (onipresença, onisciência, onipotência, eternidade, imutabilidade, santidade, Trindade) e morais (bom, amor, misericordioso, fiel, justo) de Deus revelados na Bíblia.</p>
+    </div>
+</a>
+<a href="estudo30.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo30.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>O Coração</h4>
+        <p>O coração como centro do intelecto, emoções e vontade — sua condição natural (enganoso, endurecido) e renovada pela regeneração em Cristo (Pv 4.23).</p>
+    </div>
+</a>
+<a href="estudo32.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo31.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>Natureza Humana: O que Significa Ser Humano</h4>
+        <p>Criados à imagem de Deus (intelecto, emoções, vontade), danificados pelo pecado, triunos (espírito, alma, corpo) e com responsabilidades eternas (Ec 12.1,6-7).</p>
+    </div>
+</a>
+<a href="estudo33.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo32.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>O Profeta no Antigo Testamento</h4>
+        <p>Chamado, intimidade com Deus, Espírito e Palavra, características, mensagem (Deus, pecado, Messias) e contraste com falsos profetas (Is 6.8-9).</p>
+    </div>
+</a>
+<a href="estudo34.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo33.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>A Vontade de Deus</h4>
+        <p>Três sentidos da vontade de Deus (lei, perfeita e tolerante), resposta prática (aprender, cumprir, orar, lutar contra o mal) — Is 53.10.</p>
+    </div>
+</a>
+<a href="estudo35.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo34.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>A Palavra de Deus</h4>
+        <p>Natureza (falada, profética, de Jesus, Escrituras), poder (criativa, sustentadora, regeneradora, espada) e resposta (ouvir, amar, obedecer, proclamar) — Is 55.10-11.</p>
+    </div>
+</a>
+
+<a href="estudo36.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo35.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>A Paz de Deus</h4>
+        <p>Shalom como harmonia plena, rompida pelo pecado e restaurada por Cristo (paz com Deus, interior e com os outros) — Jr 33.6.</p>
+    </div>
+</a>
+    <a href="estudo50.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo37.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>A Glória de Deus</h4>
+        <p>Esplendor e majestade de Deus, presença shekhinah, revelada em Cristo e experimentada pelos fiéis — Ez 10.4.</p>
+    </div>
+    </a>
+</a><a href="estudo37.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo36.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>A Intercessão</h4>
+        <p>Intercessão de Cristo e do Espírito, exemplos bíblicos (Moisés, Daniel, Paulo) e propósitos (perdão, cura, salvação, liderança) — Dn 9.3.</p>
+    </div>
+</a>
+<a href="estudo38.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo38.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica</span>
+        <h4>O Espírito Santo no Antigo Testamento</h4>
+        <p>Obra do Espírito na criação, profecia, liderança e promessa de derramamento geral (Jl 2.28-29) — At 2.</p>
+    </div>
+</a>
+<a href="estudo39.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo39.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Ética Cristã</span>
+        <h4>O Cuidado dos Pobres e Desfavorecidos</h4>
+        <p>Deus como defensor dos necessitados, leis contra exploração (Dt 15, Lv 25), ministério de Jesus aos pobres e chamado da igreja a ajudar (Mt 25; Gl 6.10; 2Co 8–9).</p>
+    </div>
+</a>
+<a href="estudo40.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo40.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Administração Cristã / Finanças Bíblicas</span>
+        <h4>Dízimos e Ofertas</h4>
+        <p>Princípios do dízimo no AT (Ml 3.10), ofertas voluntárias e sacrificiais, generosidade no NT (2Co 8–9), prioridade à igreja local e promessa de bênçãos.</p>
+    </div>
+</a>
+<a href="estudo41.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo41.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Reino de Deus</span>
+        <h4>O Reino de Deus</h4>
+        <p>Poder transformador de Deus em ação (Mt 12.28), não político; atual nos corações e futuro na volta de Cristo; chamado ao arrependimento, busca intensa e vida de justiça, paz e alegria (Rm 14.17; Mt 6.33).</p>
+    </div>
+</a>
+<a href="estudo42.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo42.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Cura Divina</span>
+        <h4>A Cura Divina</h4>
+        <p>Doença ligada ao pecado (Gn 3), mas Deus provê cura pela expiação de Cristo (Is 53.4-5; Mt 8.16-17); vontade revelada no AT, ministério de Jesus, igreja e dons (Tg 5.14-16); barreiras e passos de fé.</p>
+    </div>
+</a>
+<a href="estudo43.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo43.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Eclesiologia</span>
+        <h4>A Igreja</h4>
+        <p>Comunidade convocada de Deus (ekklêsia), povo peregrino, templo do Espírito, corpo de Cristo, esposa fiel, comunhão, ministério, exército espiritual e coluna da verdade (Mt 16.18; Ef 2.19-22; 1Pe 2.4-10).</p>
+    </div>
+</a>
+
+
+<a href="estudo44.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo44.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Escatologia / Fim dos Tempos</span>
+        <h4>A Grande Tribulação</h4>
+        <p>Período final de aflição sem precedentes (Mt 24.21), marcado pela abominação da desolação (Mt 24.15), falsos profetas, enganos, perseguição e juízo de Deus; termina com o retorno de Cristo (Ap 19).</p>
+    </div>
+</a>
+<a href="estudo45.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo45.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Guerra Espiritual</span>
+        <h4>Poder sobre Satanás e os Demônios</h4>
+        <p>Jesus veio destruir obras de Satanás (Mc 3.27; 1Jo 3.8), expulsando demônios e libertando escravizados. Satanás e demônios são limitados; crentes têm autoridade em nome de Jesus para resistir e libertar (Ef 6.10-18; Mc 16.17).</p>
+    </div>
+</a>
+<a href="estudo46.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo46.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Teologia Bíblica / Discernimento Espiritual</span>
+        <h4>Falsos Ensinadores</h4>
+        <p>Lobos em pele de ovelha (Mt 7.15; 24.24), aparentam justiça mas são hipócritas (Mt 23.27-28). Discernir por caráter, motivações, fruto, confiança na Palavra e integridade financeira (1Jo 4.1; Gl 5.22-23).</p>
+    </div>
+</a>
+
+<a href="estudo47.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo47.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã / Poder do Espírito</span>
+        <h4>Sinais dos Crentes</h4>
+        <p>A vida do seguidor de Cristo deve ser marcada pelo sobrenatural (Mc 16.17-18). Milagres, curas e libertação são provas de que o Reino de Deus está ativo e acessível hoje através da fé e do Espírito Santo.</p>
+    </div>
+</a>
+<a href="estudo48.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo48.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Cristologia / Pneumatologia</span>
+        <h4>Jesus e o Espírito Santo</h4>
+        <p>Explore o relacionamento vital entre o Messias e a terceira pessoa da Trindade: da concepção virginal à ressurreição, e a promessa do batismo para nós hoje.</p>
+    </div>
+</a>
+<a href="estudo49.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo49.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Ética Cristã / Vida Prática</span>
+        <h4>Riqueza e Pobreza</h4>
+        <p>Entenda o perigo da idolatria financeira e a missão de Jesus aos pobres. Um estudo sobre mordomia, generosidade e a perspectiva eterna sobre bens materiais.</p>
+    </div>
+</a>
+              <a href="estudo3.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo3.png');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>O Caráter de Deus</span>
+        <h4>O Amor na Bíblia</h4>
+        <p>Descubra a essência do amor altruísta, o significado de termos como khesed e agápe, e o exemplo supremo de Jesus.</p>
+    </div>
+</a>
+<a href="estudo31.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo50.jpg');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Vida Cristã</span>
+        <h4>O Vinho no Antigo Testamento</h4>
+        <p>Terra de vinhas, yayin e tirosh (vinho fermentado e não fermentado), advertências contra embriaguez e o voto nazireu de abstinência total (Pv 23.29-35).</p>
+    </div>
+</a>
+<a href="estudo4.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo4.png');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Temas Bíblicos</span>
+        <h4>Cidades na Bíblia</h4>
+        <p>Da cidade de refúgio de Caim à Nova Jerusalém, descubra como o plano de Deus integra o jardim à vida urbana.</p>
+    </div>
+</a>
+          <a href="estudo2.html" class="study-card">
+    <div class="card-image" style="background-image: url('../style/estudo2.png');">
+        <span class="badge-new">Novo</span>
+    </div>
+    <div class="card-content">
+        <span>Doutrinas Fundamentais</span>
+        <h4>Redenção</h4>
+        <p>Entenda o significado bíblico do resgate e como o "sangue do Cordeiro" nos liberta da morte.</p>
+                </div>
+            </a>
+            </div>
+    </div>
+
+    <footer>
+        <p>Mergulho Bíblico &copy; 2026</p>
+        <p style="margin-top: 10px; font-weight: 300; opacity: 0.6;">Lâmpada para os meus pés é a tua palavra.</p>
+    </footer>
+
+    <script>
+        // --- 1. Sistema de Busca ---
+        const searchInput = document.getElementById('searchInput');
+        const studyCards = document.querySelectorAll('.study-card');
+        const noResults = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let foundAny = false;
+
+            studyCards.forEach(card => {
+                const title = card.querySelector('h4').innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const category = card.querySelector('span').innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const description = card.querySelector('p').innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                if (title.includes(filter) || category.includes(filter) || description.includes(filter)) {
+                    card.style.display = "flex";
+                    foundAny = true;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            noResults.style.display = foundAny ? "none" : "block";
+        });
+
+        // --- 2. Gerenciamento de Selo "Novo" ---
+        function setupBadges() {
+            const readStudies = JSON.parse(localStorage.getItem('readStudies') || '[]');
+
+            studyCards.forEach(card => {
+                const href = card.getAttribute('href');
+                const badge = card.querySelector('.badge-new');
+
+                // Se já foi lido, remove o selo na carga da página
+                if (readStudies.includes(href) && badge) {
+                    badge.remove();
+                }
+
+                // Ao clicar, salva que foi lido
+                card.addEventListener('click', () => {
+                    if (!readStudies.includes(href)) {
+                        readStudies.push(href);
+                        localStorage.setItem('readStudies', JSON.stringify(readStudies));
+                    }
+                });
+            });
+        }
+
+        // --- 3. Estudo Aleatório ---
+        function abrirEstudoAleatorio() {
+            const numeroSorteado = Math.floor(Math.random() * 50) + 1;
+            window.location.href = "estudo" + numeroSorteado + ".html";
+        }
+
+        // Inicializa as funções
+        window.onload = setupBadges;
+    </script>
+
+</body>
+</html>

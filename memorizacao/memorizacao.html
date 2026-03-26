@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorização | Mergulho Bíblico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --navy-blue: #0a2342;
+            --turquoise: #1cb3a0;
+            --text-dark: #2c3e50;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); line-height: 1.6; }
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* HEADER AJUSTADO */
+        header {
+            background-color: var(--navy-blue);
+            padding: 15px 5%;
+            display: flex;
+            align-items: center; /* Alinha logo e menu verticalmente */
+            justify-content: flex-start; /* Alinha tudo à esquerda inicialmente */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { 
+            color: #fff; 
+            font-size: 1.2rem; 
+            font-family: 'Merriweather', serif; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            flex-shrink: 0; /* Impede o logo de encolher */
+        }
+
+        nav {
+            flex-grow: 1; /* Ocupa todo o espaço restante entre o logo e o fim do header */
+            display: flex;
+            justify-content: center; /* Centraliza o conteúdo (as escritas) */
+        }
+
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 25px; 
+            align-items: center;
+        }
+        
+        nav ul li a { 
+            color: #e0e0e0; 
+            font-size: 0.9rem; 
+            font-weight: 400;
+        }
+        
+        nav ul li a:hover { color: var(--turquoise); }
+
+        /* CONTEÚDO DA PÁGINA */
+        .container { padding: 60px 5%; max-width: 1000px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 60px; }
+        .page-header h1 { font-size: 2.5rem; color: var(--navy-blue); margin-bottom: 15px; }
+        .page-header p { color: #666; max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+        /* Grid de Métodos */
+        .metodos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .metodo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .metodo-card:hover {
+            border-color: var(--turquoise);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .icon-circle {
+            width: 90px;
+            height: 90px;
+            background: #f0fdfa;
+            color: var(--turquoise);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .metodo-card:hover .icon-circle {
+            background: var(--turquoise);
+            color: white;
+        }
+
+        .metodo-card h3 { color: var(--navy-blue); margin-bottom: 15px; font-size: 1.4rem; }
+        .metodo-card p { font-size: 0.95rem; color: #555; margin-bottom: 25px; flex-grow: 1; }
+
+        .btn-metodo {
+            background: var(--navy-blue);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .btn-metodo:hover { 
+            background: var(--turquoise);
+            box-shadow: 0 5px 15px rgba(28, 179, 160, 0.3);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px 5%;
+            }
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .metodos-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-header h1 { font-size: 2rem; }
+        }
+
+        .btn-header { 
+            background: var(--turquoise); 
+            color: white; 
+            padding: 10px 22px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        
+        .btn-header:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(28, 179, 160, 0.3); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-anchor"></i> Mergulho Bíblico
+        </div>
+        <nav>
+            <ul>
+                   <li><a href="/index.html">Início</a></li>
+                <li><a href="/estudos/inicioestudos.html">Estudos</a></li>
+                <li><a href="/memorizacao/memorizacao.html">Memorização</a></li>
+                <li><a href="/sobre.html">Sobre</a></li>
+                
+            </ul>
+        </nav>
+         <a href="ajuda.html" class="btn-header">AJUDA-NOS</a>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Esconda a Palavra</h1>
+            <p>Transforme sua mente guardando a Verdade. Escolha o caminho que melhor se adapta ao seu aprendizado e grave as Escrituras em seu coração.</p>
+        </div>
+
+        <div class="metodos-grid">
+            <div class="metodo-card">
+                <div class="icon-circle"><i class="fa-solid fa-clone"></i></div>
+                <h3>Flashcards</h3>
+                <p>O método clássico de verso e reverso. Ideal para testar sua memória visual de forma rápida e prática.</p>
+                <a href="metodo-flashcards.html" class="btn-metodo">Praticar</a>
+            </div>
+
+            <div class="metodo-card">
+                <div class="icon-circle"><i class="fa-solid fa-eraser"></i></div>
+                <h3>Omissão Gradual</h3>
+                <p>Apague as palavras aos poucos até que reste apenas o seu conhecimento gravado no coração.</p>
+                <a href="metodo-omissao.html" class="btn-metodo">Praticar</a>
+            </div>
+
+            <div class="metodo-card">
+                <div class="icon-circle"><i class="fa-solid fa-font"></i></div>
+                <h3>Primeira Letra</h3>
+                <p>Exibe apenas a inicial de cada palavra. Um gatilho mental poderoso para quem já conhece o texto.</p>
+                <a href="metodo-letras.html" class="btn-metodo">Praticar</a>
+            </div>
+
+            <div class="metodo-card">
+                <div class="icon-circle"><i class="fa-solid fa-keyboard"></i></div>
+                <h3>Verificação</h3>
+                <p>Escreva o versículo e receba correção em tempo real. A melhor forma de garantir precisão total.</p>
+                <a href="metodo-digitar.html" class="btn-metodo">Praticar</a>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top: 80px; background: var(--navy-blue); color: white; text-align: center; padding: 40px; font-size: 0.85rem;">
+        <p style="margin-bottom: 10px;">"Guardei a tua palavra no meu coração para não pecar contra ti."</p>
+        <span style="opacity: 0.7;">Salmos 119:11</span>
+    </footer>
+
+</body>
+</html>

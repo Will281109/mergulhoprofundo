@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos de Leitura | Mergulho Bíblico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --navy-blue: #0a2342;
+            --turquoise: #1cb3a0;
+            --text-dark: #2c3e50;
+            --card-bg: #ffffff;
+            --accent-orange: #e67e22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); line-height: 1.6; }
+        a { text-decoration: none; transition: 0.3s; }
+
+        header {
+            background-color: var(--navy-blue);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { color: #fff; font-size: 1.2rem; font-family: 'Merriweather', serif; display: flex; align-items: center; gap: 8px; }
+
+        .container { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-header h1 { font-size: 2.5rem; color: var(--navy-blue); margin-bottom: 10px; }
+        .page-header > p { color: #666; max-width: 700px; margin: 0 auto 30px auto; }
+
+        /* Bloco de Importância */
+        .info-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            margin-bottom: 40px;
+        }
+        .info-box h2 { font-family: 'Merriweather', serif; color: var(--navy-blue); font-size: 1.4rem; margin-bottom: 15px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .info-item { display: flex; gap: 12px; font-size: 0.9rem; line-height: 1.5; }
+        .info-item i { color: var(--turquoise); font-size: 1.1rem; margin-top: 3px; }
+
+        /* Status de Progresso Geral */
+        .status-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        .status-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--turquoise);
+        }
+        .status-card i { font-size: 1.5rem; color: var(--turquoise); margin-bottom: 10px; }
+        .status-card span { display: block; font-size: 1.2rem; font-weight: bold; color: var(--navy-blue); }
+
+        /* Categorias */
+        .category-title {
+            font-family: 'Merriweather', serif;
+            color: var(--navy-blue);
+            margin: 50px 0 25px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0dcd5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Grid de Planos */
+        .planos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .plano-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--accent-orange);
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+        .plano-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .plano-tag {
+            position: absolute; top: 15px; right: 15px;
+            background: #fdf2e9; color: var(--accent-orange);
+            padding: 4px 10px; border-radius: 5px;
+            font-size: 0.7rem; font-weight: bold; text-transform: uppercase;
+        }
+
+        .plano-card h3 { margin-bottom: 10px; color: var(--navy-blue); padding-right: 60px; font-size: 1.2rem; }
+        .plano-card p { font-size: 0.9rem; color: #555; margin-bottom: 20px; flex-grow: 1; }
+
+        .plano-meta {
+            display: flex; align-items: center; gap: 15px;
+            font-size: 0.85rem; color: #777; margin-bottom: 20px;
+            padding: 10px 0; border-top: 1px solid #eee;
+        }
+
+        .btn-plano {
+            background: var(--navy-blue);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn-plano:hover { background: var(--turquoise); }
+
+        footer { margin-top: 80px; background: var(--navy-blue); color: white; text-align: center; padding: 40px 20px; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .planos-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="logo"><i class="fa-solid fa-anchor"></i> Mergulho Bíblico</a>
+        <a href="../index.html" style="color: white; font-size: 0.9rem;">Voltar ao Início</a>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Planos de Leitura</h1>
+            <p>O mapa da sua jornada. Escolha um plano que se adapte ao seu ritmo e mantenha a disciplina de navegar pelas Escrituras diariamente.</p>
+            
+            <div class="info-box">
+                <h2><i class="fa-solid fa-compass"></i> A Importância da Navegação Diária</h2>
+                <p style="color: #555; margin-bottom: 10px;">Mergulhar na Bíblia sem um roteiro é como navegar em mar aberto sem bússola. Os Planos de Leitura são ferramentas que ajudam você a construir o hábito da constância.</p>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span><strong>Visão Panorâmica:</strong> Evita que você leia apenas seus versículos favoritos, permitindo conhecer todo o conselho de Deus.</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-mountain-sun"></i>
+                        <span><strong>Alimento Constante:</strong> Assim como o corpo precisa de comida, o espírito se fortalece com a nutrição diária da Palavra.</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-route"></i>
+                        <span><strong>Vencendo a Procrastinação:</strong> Ter uma meta diária clara elimina a dúvida de "por onde começar".</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-overview">
+            <div class="status-card">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>0 Dias</span>
+                <small>Sequência Atual</small>
+            </div>
+            <div class="status-card">
+                <i class="fa-solid fa-fire"></i>
+                <span>0/1189</span>
+                <small>Capítulos Lidos</small>
+            </div>
+            <div class="status-card">
+                <i class="fa-solid fa-medal"></i>
+                <span>Nível 1</span>
+                <small>Explorador</small>
+            </div>
+        </div>
+
+        <h2 class="category-title"><i class="fa-solid fa-bolt" style="color: #f1c40f;"></i> Curta Duração (7 a 15 dias)</h2>
+        <div class="planos-grid">
+            <div class="plano-card" style="border-left-color: #f1c40f;">
+                <h3>Primeiros Passos</h3>
+                <p>Textos fundamentais sobre salvação e o amor de Deus.</p>
+                <div class="plano-meta"><span>7 Dias</span><span>Devocional</span></div>
+                <a href="plano-passos.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: #f1c40f;">
+                <h3>Vencendo a Ansiedade</h3>
+                <p>Salmos e ensinos de Jesus sobre descanso e confiança.</p>
+                <div class="plano-meta"><span>10 Dias</span><span>Paz</span></div>
+                <a href="plano-ansiedade.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: #f1c40f;">
+                <h3>Semana da Paixão</h3>
+                <p>A cronologia da última semana de Jesus na terra.</p>
+                <div class="plano-meta"><span>8 Dias</span><span>Páscoa</span></div>
+                <a href="plano-paixao.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: #f1c40f;">
+                <h3>Quem é Jesus?</h3>
+                <p>Focado nos milagres e ensinos diretos do Mestre.</p>
+                <div class="plano-meta"><span>15 Dias</span><span>Estudo</span></div>
+                <a href="plano-jesus.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: #f1c40f;">
+                <h3>O Coração de Davi</h3>
+                <p>A ascensão de Davi e seus Salmos mais profundos.</p>
+                <div class="plano-meta"><span>12 Dias</span><span>Personagem</span></div>
+                <a href="plano-davi.html" class="btn-plano">Começar</a>
+            </div>
+        </div>
+
+        <h2 class="category-title"><i class="fa-solid fa-water" style="color: var(--turquoise);"></i> Médio Prazo (30 a 90 dias)</h2>
+        <div class="planos-grid">
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>Sabedoria Diária</h3>
+                <p>Um capítulo de Provérbios por dia. Prático e direto.</p>
+                <div class="plano-meta"><span>31 Dias</span><span>Provérbios</span></div>
+                <a href="plano-sabedoria.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>Novo Testamento Expresso</h3>
+                <p>Ler todo o NT lendo cerca de 3 capítulos por dia.</p>
+                <div class="plano-meta"><span>90 Dias</span><span>NT</span></div>
+                <a href="plano-nt.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>As Cartas de Paulo</h3>
+                <p>De Romanos a Filemom. Entendendo a doutrina cristã.</p>
+                <div class="plano-meta"><span>45 Dias</span><span>Epístolas</span></div>
+                <a href="plano-paulo.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>O Pentateuco</h3>
+                <p>Os 5 livros da Lei para entender a origem de tudo.</p>
+                <div class="plano-meta"><span>60 Dias</span><span>Fundamentos</span></div>
+                <a href="plano-lei.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>Mulheres da Bíblia</h3>
+                <p>A vida e legado de personagens femininas marcantes.</p>
+                <div class="plano-meta"><span>30 Dias</span><span>Biográfico</span></div>
+                <a href="plano-mulheres.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--turquoise);">
+                <h3>Heróis da Fé</h3>
+                <p>Histórias dos personagens citados em Hebreus 11.</p>
+                <div class="plano-meta"><span>30 Dias</span><span>Hebreus</span></div>
+                <a href="plano-herois.html" class="btn-plano">Começar</a>
+            </div>
+        </div>
+
+        <h2 class="category-title"><i class="fa-solid fa-anchor" style="color: var(--navy-blue);"></i> Longo Prazo (6 meses a 1 ano)</h2>
+        <div class="planos-grid">
+            <div class="plano-card" style="border-left-color: var(--navy-blue);">
+                <span class="plano-tag">Completo</span>
+                <h3>Bíblia Cronológica</h3>
+                <p>A história na ordem em que os fatos ocorreram.</p>
+                <div class="plano-meta"><span>365 Dias</span><span>Cronológico</span></div>
+                <a href="plano-cronologico.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--navy-blue);">
+                <h3>Capa a Capa</h3>
+                <p>Leitura tradicional de Gênesis a Apocalipse.</p>
+                <div class="plano-meta"><span>365 Dias</span><span>Sistemático</span></div>
+                <a href="plano-capaacapa.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--navy-blue);">
+                <h3>Plano M'Cheyne</h3>
+                <p>AT uma vez, NT e Salmos duas vezes por ano.</p>
+                <div class="plano-meta"><span>365 Dias</span><span>Avançado</span></div>
+                <a href="plano-mcheyne.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--navy-blue);">
+                <h3>Antigo Testamento</h3>
+                <p>Foco intensivo na base das Escrituras Sagradas.</p>
+                <div class="plano-meta"><span>180 Dias</span><span>Antigo T.</span></div>
+                <a href="plano-at.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--navy-blue);">
+                <h3>Bíblia 180 Dias</h3>
+                <p>Leitura acelerada com 6 a 7 capítulos diários.</p>
+                <div class="plano-meta"><span>180 Dias</span><span>Intensivo</span></div>
+                <a href="plano-acelerado.html" class="btn-plano">Começar</a>
+            </div>
+        </div>
+
+        <h2 class="category-title"><i class="fa-solid fa-bullseye" style="color: var(--accent-orange);"></i> Temáticos e Estratégicos</h2>
+        <div class="planos-grid">
+            <div class="plano-card" style="border-left-color: var(--accent-orange);">
+                <h3>Doutrinas Fundamentais</h3>
+                <p>Um tema teológico por dia (Trindade, Graça, etc).</p>
+                <div class="plano-meta"><span>30 Dias</span><span>Teologia</span></div>
+                <a href="plano-doutrina.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--accent-orange);">
+                <h3>A Vida de Moisés</h3>
+                <p>Do Egito à beira da Terra Prometida.</p>
+                <div class="plano-meta"><span>40 Dias</span><span>Histórico</span></div>
+                <a href="plano-moises.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--accent-orange);">
+                <h3>O Reino de Deus</h3>
+                <p>Seleção de parábolas e ensinos sobre o Reino.</p>
+                <div class="plano-meta"><span>30 Dias</span><span>Parábolas</span></div>
+                <a href="plano-reino.html" class="btn-plano">Começar</a>
+            </div>
+            <div class="plano-card" style="border-left-color: var(--accent-orange);">
+                <h3>Bíblia em Família</h3>
+                <p>Versículos curtos e histórias para ler com as crianças.</p>
+                <div class="plano-meta"><span>60 Dias</span><span>Devocional</span></div>
+                <a href="plano-familia.html" class="btn-plano">Começar</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>"Lâmpada para os meus pés é tua palavra e luz, para o meu caminho." - Salmos 119:105</p>
+    </footer>
+
+</body>
+</html>
